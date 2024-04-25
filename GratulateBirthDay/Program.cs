@@ -11,13 +11,14 @@ namespace GratulateBirthDay
         {
              
             var _consoleui = new ConsoleUserInteractor();
+            IPeopleRegister Register = new RegisterOfFamousPeople(); 
 
             try
             {
                 var NamesBirthdayRegister  = new RegisterOfFamousPeople()
                     .ReadAll();
 
-                var BirthdayApplication = new BirthDayApplication(NamesBirthdayRegister, _consoleui);
+                var BirthdayApplication = new BirthDayApplication(Register, new FamousPeopleFinder(Register), _consoleui);
                 BirthdayApplication.Run();
             }
             catch (Exception e)

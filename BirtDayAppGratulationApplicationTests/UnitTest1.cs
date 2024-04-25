@@ -11,7 +11,7 @@ namespace GratulateBirthDayTests
     public class Tests
     {
         private Mock<IPeopleRegister> _registermock;
-        private FamousPeopleFinder _peopleFinder;
+        private IPeopleFinder _peopleFinder;
         private Mock<IUserInteractor> _uimock;
         private BirthDayApplication _cut;
         private IReadOnlyDictionary<DateTime, string[]> _dictionary;
@@ -20,24 +20,30 @@ namespace GratulateBirthDayTests
         public void Setup()
         {
             _registermock = new Mock<IPeopleRegister>();
-            _peopleFinder = new FamousPeopleFinder(
-               _registermock.Object);
             _uimock = new Mock<IUserInteractor>();
+            
 
             IReadOnlyDictionary<DateTime, string[]> _dictionary =
             new Dictionary<DateTime, string[]>()
         {
                     { new DateTime(1930, 5, 31)
                     , new string[] { "Clint EastWood" }
+                    },
+                     { new DateTime(1963, 4, 18)
+                    , new string[] { "Conan O'Brien" }
                     }
         };
-            _cut = new BirthDayApplication(_dictionary, _uimock.Object);
+            _registermock.Setup(mock => mock.NameByBirthDate)
+                .Returns(_dictionary);
+            _peopleFinder = new FamousPeopleFinder(
+             _registermock.Object);
+
+            _cut = new BirthDayApplication(_registermock.Object, _peopleFinder, _uimock.Object);
         }
 
         [Test]
         public void FindNamesFromBirthDayAt_OrNullShouldReturnNullWhenDateIsMissing()
         {
-            //var registermock = new Mock<IPeopleRegister>();
 
             IReadOnlyDictionary<DateTime, string[]> dictionary =
                new Dictionary<DateTime, string[]>()
@@ -70,7 +76,7 @@ namespace GratulateBirthDayTests
                     { new DateTime(1930, 5, 31)
                     , new string[] { "Clint EastWood" }
                     },
-                    { new DateTime(1964, 4, 18)
+                    { new DateTime(1963, 4, 18)
                     , new string[] { "Conan O'Brien" }
                     }
            };
@@ -112,18 +118,51 @@ namespace GratulateBirthDayTests
 
         public void ShouldShowCorrectCongratulationMessageForConanThatIsIncludedInRegister()
         {
+            
             _registermock.Setup(mock => mock.NameByBirthDate)
-               .Returns(_dictionary);
+              .Returns(_dictionary);
+            var peopleFindermock = new Mock<IPeopleFinder>();
+            peopleFindermock.Setup(mock => mock
+            .FindNamesFromBirthDayAt_OrNull(new DateTime(1963, 4, 18)))
+                .Returns(new string[] { "Conan O'Brien" });
+            
+                
+
+            _cut = new BirthDayApplication(_registermock.Object, peopleFindermock.Object, _uimock.Object);
 
             _cut.Run();
             var expectedforeName = "Conan";
             _uimock.Verify(mock =>
             mock.ShowMessage("Happy birthday " + expectedforeName + "!. And all of you!."));
             
+           
+        }
+        [Test]
+        public void ShouldShowNoOneHasBirtdayMessageForConanWhenNotIncludedInRegister()
+        {
+           IReadOnlyDictionary<DateTime, string[]> dictionarywithoutConan =
+           
+               new Dictionary<DateTime, string[]>()
+           {
+                    { new DateTime(1930, 5, 31)
+                    , new string[] { "Clint EastWood" }
+                    },
+           };
+
+            _registermock.Setup(mock => mock.NameByBirthDate)
+               .Returns(dictionarywithoutConan);
+            
+
+            _cut = new BirthDayApplication(_registermock.Object, _peopleFinder, _uimock.Object);
+            _cut.Run();
+            
+            _uimock.Verify(mock =>
+            mock.ShowMessage("Nope. No one known has birthday at this particular date. "));
+
         }
 
-        
-        
+
+
 
 
     }
