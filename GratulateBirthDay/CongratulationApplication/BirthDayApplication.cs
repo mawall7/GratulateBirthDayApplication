@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace GratulateBirthDay
 {
-    internal class BirthDayApplication
+    public class BirthDayApplication
     {
         private IReadOnlyDictionary<DateTime, string[]> _namesBirdayRegistry;
-        private ConsoleUserInteractor _ui;
+        private IUserInteractor _ui;
 
-        public BirthDayApplication(IReadOnlyDictionary<DateTime, string[]> namesBirdayRegistry, ConsoleUserInteractor consoleui)
+        public BirthDayApplication(IReadOnlyDictionary<DateTime, string[]> namesBirdayRegistry, IUserInteractor consoleui)
         {
             _namesBirdayRegistry = namesBirdayRegistry;
             _ui = consoleui;
