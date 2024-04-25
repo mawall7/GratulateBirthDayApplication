@@ -9,5 +9,8 @@ namespace GratulateBirthDay
     public interface IPeopleRegister
     {
         public  IReadOnlyDictionary<DateTime, string[]> NameByBirthDate { get;}
+        public IReadOnlyDictionary<DateTime, string[]> ReadAll();
+
     }
 }
+
