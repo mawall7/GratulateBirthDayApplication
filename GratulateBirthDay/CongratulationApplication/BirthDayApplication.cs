@@ -20,8 +20,8 @@ namespace GratulateBirthDay
             
              var searchDate = GetSampleDate();
        
-            _ui.Read("Find out a birthday of a famous person. (Press key)");
-          
+            _ui.ShowMessage("Find out a birthday of a famous person. (Press key)");
+            _ui.Read();
             _ui.Read($"Any famous who has birthday on " +
                 $"{searchDate.Day}/{searchDate.Month} {searchDate.Year} ?." +
                 $" (Press key)");
