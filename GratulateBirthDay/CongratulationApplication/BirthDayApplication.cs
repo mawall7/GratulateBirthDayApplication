@@ -17,35 +17,40 @@ namespace GratulateBirthDay
 
         public void Run()
         {
-            _ui.ShowMessage("the git workflow setup will likely fail - because of using dotnet 5.0 as runner - check in actions after commiting");
-            _ui.ShowMessage("Find out a birthday of a famous person. (Press key)");
-            _ui.Read();
-            var sampleDate = DateTime.Parse(Resource1.SampleData);
-
-            var searchDate = sampleDate;
-
-            _ui.ShowMessage($"Any famous who has birthday on " +
+            
+             var searchDate = GetSampleDate();
+       
+            _ui.Read("Find out a birthday of a famous person. (Press key)");
+          
+            _ui.Read($"Any famous who has birthday on " +
                 $"{searchDate.Day}/{searchDate.Month} {searchDate.Year} ?." +
                 $" (Press key)");
-
-            _ui.Read();
-
+              
             var namesWithBirthday = _peopleFinder
                 .FindNamesFromBirthDayAt_OrNull(searchDate);
-            string foreName = default;
-            if (namesWithBirthday != null)
+            
+            if (namesWithBirthday == null)
             {
+                _ui.ShowMessage("Nope. No one known has birthday at this particular date. ");
+            }
+            else 
+            {
+                string foreName = default;
+            
                 foreach (var name in namesWithBirthday)
                 {
-                    Person person = (Person)name;
-                    _ui.ShowMessage(person.ToString());
-                    foreName = name.GetForeNameFromFullName();
-
+                    _ui.ShowMessage(((Person)name).ToString());
+                    foreName = name.GetFirstForeNameFromFullNames();
                 }
+
                 _ui.ShowMessage("Happy birthday " + foreName + "!. And all of you!.");
             }
-            else _ui.ShowMessage("Nope. No one known has birthday at this particular date. ");
             _ui.Read();
         }
+
+     
+        public DateTime GetSampleDate() => DateTime.Parse(Resource1.SampleData);
+
+       
     }
 }

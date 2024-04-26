@@ -8,7 +8,7 @@ namespace GratulateBirthDay.StringExtensions
 {
     public static class StringExtensions
     {
-        public static string GetForeNameFromFullName(this string fullname)
+        public static string GetFirstForeNameFromFullNames(this string fullname)
         {
             var forename = fullname.Split(" ")[0];
             return forename;
