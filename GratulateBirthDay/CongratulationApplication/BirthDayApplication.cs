@@ -17,6 +17,7 @@ namespace GratulateBirthDay
 
         public void Run()
         {
+            _ui.ShowMessage("the git workflow setup will likely fail - because of using dotnet 5.0 as runner - check in actions after commiting");
             _ui.ShowMessage("Find out a birthday of a famous person. (Press key)");
             _ui.Read();
             var sampleDate = DateTime.Parse(Resource1.SampleData);
