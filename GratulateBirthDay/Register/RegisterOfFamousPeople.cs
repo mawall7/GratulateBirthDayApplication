@@ -23,6 +23,7 @@ namespace GratulateBirthDay
             } 
         }
 
+        
         public IReadOnlyDictionary<DateTime, string[]> ReadAll()
         {
             return NameByBirthDate;

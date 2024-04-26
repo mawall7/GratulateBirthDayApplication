@@ -8,7 +8,6 @@ namespace GratulateBirthDay
 {
     public class FamousPeopleFinder : IPeopleFinder
     {
-        //private Dictionary<DateTime, string[]> _famousPeoplesBirthDays;
         public IPeopleRegister Registry { get; set; }
         public FamousPeopleFinder(IPeopleRegister famousPeoplesBirthDays)
         {
@@ -17,12 +16,12 @@ namespace GratulateBirthDay
 
         public string[] FindNamesFromBirthDayAt_OrNull(DateTime targetDate)
         {
-
+            
             return Registry.NameByBirthDate.Where(item =>
                 item.Key == targetDate)
                 .Select(item => item.Value)
                 .FirstOrDefault();
         }
-
     }
+
 }

@@ -18,8 +18,8 @@ namespace GratulateBirthDay
             }
             
             return Console.ReadLine();
-
         }
+
 
         public void ShowMessage(string message)
         {

@@ -10,15 +10,19 @@ namespace GratulateBirthDay
         static void Main(string[] args)
         {
              
-            var _consoleui = new ConsoleUserInteractor();
+            IUserInteractor _consoleui = new ConsoleUserInteractor();
             IPeopleRegister Register = new RegisterOfFamousPeople(); 
 
             try
             {
-                var NamesBirthdayRegister  = new RegisterOfFamousPeople()
-                    .ReadAll();
+                //todo include this?? var NamesBirthdayRegister  = new RegisterOfFamousPeople()
+                //.ReadAll();
 
-                var BirthdayApplication = new BirthDayApplication(Register, new FamousPeopleFinder(Register), _consoleui);
+                var BirthdayApplication = new BirthDayApplication(
+                    new FamousPeopleFinder(
+                        new RegisterOfFamousPeople())
+                    , _consoleui);
+                
                 BirthdayApplication.Run();
             }
             catch (Exception e)

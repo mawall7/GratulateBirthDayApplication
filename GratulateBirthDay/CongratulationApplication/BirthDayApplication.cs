@@ -6,26 +6,21 @@ namespace GratulateBirthDay
 {
     public class BirthDayApplication
     {
-        //private IReadOnlyDictionary<DateTime, string[]> _namesBirdayRegistry;
-        private IPeopleRegister _peopleRegister;
         private IUserInteractor _ui;
         private IPeopleFinder _peopleFinder;
 
-        public BirthDayApplication(IPeopleRegister peopleRegister/*IReadOnlyDictionary<DateTime, string[]> namesBirdayRegistry*/,IPeopleFinder peopleFinder, IUserInteractor consoleui)
+        public BirthDayApplication(IPeopleFinder peopleFinder, IUserInteractor consoleui)
         {
-            //_namesBirdayRegistry = namesBirdayRegistry;
-            _peopleRegister = peopleRegister;
             _ui = consoleui;
             _peopleFinder = peopleFinder;
         }
 
         public void Run()
         {
-            _ui.ShowMessage("Find out a birthday of a famous person. (Return)");
+            _ui.ShowMessage("Find out a birthday of a famous person. (Press key)");
             _ui.Read();
             var sampleDate = DateTime.Parse(Resource1.SampleData);
 
-            //var searchDate = new DateTime(1963, 4, 18) use ResourceFile instead;
             var searchDate = sampleDate;
 
             _ui.ShowMessage($"Any famous who has birthday on " +
@@ -33,10 +28,6 @@ namespace GratulateBirthDay
                 $" (Press key)");
 
             _ui.Read();
-            //IPeopleRegister register = new RegisterOfFamousPeople();
-
-            //var famousPeopleFinder = new FamousPeopleFinder(
-            //    _peopleRegister);
 
             var namesWithBirthday = _peopleFinder
                 .FindNamesFromBirthDayAt_OrNull(searchDate);

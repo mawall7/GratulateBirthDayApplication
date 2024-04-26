@@ -8,15 +8,15 @@ namespace GratulateBirthDay
 {
     public class Person
     {
-        private string _fullname { get; }
+        private string _fullName { get; }
 
         public Person(string Name)
         {
-            _fullname = Name;
+            _fullName = Name;
         }
         public override string ToString()
         {
-            return $"It's {_fullname}'s birthday!.";
+            return $"It's {_fullName}'s birthday!.";
         }
 
         public static explicit operator Person(string name)

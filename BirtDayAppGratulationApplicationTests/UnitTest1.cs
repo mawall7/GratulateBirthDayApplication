@@ -23,7 +23,7 @@ namespace GratulateBirthDayTests
             _uimock = new Mock<IUserInteractor>();
             
 
-            IReadOnlyDictionary<DateTime, string[]> _dictionary =
+            _dictionary =
             new Dictionary<DateTime, string[]>()
         {
                     { new DateTime(1930, 5, 31)
@@ -38,7 +38,7 @@ namespace GratulateBirthDayTests
             _peopleFinder = new FamousPeopleFinder(
              _registermock.Object);
 
-            _cut = new BirthDayApplication(_registermock.Object, _peopleFinder, _uimock.Object);
+            _cut = new BirthDayApplication(_peopleFinder, _uimock.Object);
         }
 
         [Test]
@@ -110,13 +110,13 @@ namespace GratulateBirthDayTests
             _cut.Run();
             _uimock.Verify(mock => 
             mock.ShowMessage(
-                "Find out a birthday of a famous person. (Return)"));
+                "Find out a birthday of a famous person. (Press key)"));
                 
         }
 
         [Test]
 
-        public void ShouldShowCorrectCongratulationMessageForConanThatIsIncludedInRegister()
+        public void ShouldShowCorrectCongratulationMessageForConansBirtdayWhenIncludedInRegister()
         {
             
             _registermock.Setup(mock => mock.NameByBirthDate)
@@ -126,16 +126,14 @@ namespace GratulateBirthDayTests
             .FindNamesFromBirthDayAt_OrNull(new DateTime(1963, 4, 18)))
                 .Returns(new string[] { "Conan O'Brien" });
             
-                
 
-            _cut = new BirthDayApplication(_registermock.Object, peopleFindermock.Object, _uimock.Object);
+            _cut = new BirthDayApplication(peopleFindermock.Object, _uimock.Object);
 
             _cut.Run();
             var expectedforeName = "Conan";
             _uimock.Verify(mock =>
             mock.ShowMessage("Happy birthday " + expectedforeName + "!. And all of you!."));
             
-           
         }
         [Test]
         public void ShouldShowNoOneHasBirtdayMessageForConanWhenNotIncludedInRegister()
@@ -153,7 +151,7 @@ namespace GratulateBirthDayTests
                .Returns(dictionarywithoutConan);
             
 
-            _cut = new BirthDayApplication(_registermock.Object, _peopleFinder, _uimock.Object);
+            _cut = new BirthDayApplication(_peopleFinder, _uimock.Object);
             _cut.Run();
             
             _uimock.Verify(mock =>
